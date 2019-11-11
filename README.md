@@ -1,0 +1,1 @@
+# nodeConfEu-error-handling-workshop
