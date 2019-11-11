@@ -6,12 +6,13 @@
 // Use assertions to catch programming errors.
 // https://en.wikipedia.org/wiki/Assertion_%28software_development%29#Comparison_with_error_handling
 
+const assert = require('assert');
+
 class ApplicationError extends Error {
   constructor(message, options = {}) {
     assert(typeof message === 'string');
     assert(typeof options === 'object');
     assert(options !== null);
-    assert(Object.prototype.hasOwnProperty.call(options, 'stack'));
     super(message);
 
     // Attach relevant information to the error instance

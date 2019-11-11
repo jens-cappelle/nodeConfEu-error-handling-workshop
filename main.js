@@ -23,14 +23,16 @@ fastify.register(require('fastify-jwt'), {
 
 fastify.get('/', async () => ({ hello: 'world' }));
 
-fastify.post('/', opts, async () => {
-  const { someKey, someOtherKey } = opts;
+fastify.post('/', opts, async (request, reply) => {
+  const { body: { someKey, someOtherKey } } = request;
+
   if (someKey === 'notFound') {
-    throw new NotFoundError();
+    throw new NotFoundError('not found', opts);
   }
   if (someKey === 'badRequest') {
     throw new BadRequestError();
   }
+
   return someOtherKey;
 });
 
