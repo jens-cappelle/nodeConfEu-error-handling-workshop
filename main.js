@@ -2,6 +2,8 @@ const fastify = require('fastify')({
   logger: true,
 });
 
+const { NotFoundError, BadRequestError } = require('./extendUserFacingError');
+
 // Validate incoming data
 const opts = {
   schema: {
@@ -21,7 +23,16 @@ fastify.register(require('fastify-jwt'), {
 
 fastify.get('/', async () => ({ hello: 'world' }));
 
-fastify.post('/', opts, async () => ({ hello: 'world' }));
+fastify.post('/', opts, async () => {
+  const { someKey, someOtherKey } = opts;
+  if (someKey === 'notFound') {
+    throw new NotFoundError();
+  }
+  if (someKey === 'badRequest') {
+    throw new BadRequestError();
+  }
+  return someOtherKey;
+});
 
 const start = async () => {
   try {
